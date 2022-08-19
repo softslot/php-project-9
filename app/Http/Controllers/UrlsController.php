@@ -12,7 +12,10 @@ class UrlsController extends Controller
 {
     public function index(): View
     {
-        return view('url.index');
+        $perPage = 15;
+        $urls = DB::table('urls')->paginate($perPage);
+
+        return view('url.index', compact('urls'));
     }
 
     /**
