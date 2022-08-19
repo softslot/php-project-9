@@ -31,24 +31,36 @@ class UrlsController extends Controller
 
         ['scheme' => $scheme, 'host' => $host] = parse_url($validated['url']['name']);
         $normalizedName = "{$scheme}://{$host}";
-        $currentTime = now()->toDateTimeString();
-
-        DB::table('urls')->insert([
-            'name' => $normalizedName,
-            'created_at' => $currentTime,
-            'updated_at' => $currentTime,
-        ]);
 
         $url = DB::table('urls')
             ->where('name', $normalizedName)
             ->first();
 
-        if (!$url) {
+        if ($url) {
+            flash('Страница уже существует');
+
+            return redirect()
+                ->route('urls.show', $url->id);
+        }
+
+        DB::table('urls')->insert([
+            'name' => $normalizedName,
+            'created_at' => now()->toDateTimeString(),
+            'updated_at' => now()->toDateTimeString(),
+        ]);
+
+        $newUrl = DB::table('urls')
+            ->where('name', $normalizedName)
+            ->first();
+
+        if (!$newUrl) {
             abort('404');
         }
 
+        flash('Страница успешно добавлена')->success();
+
         return redirect()
-            ->route('urls.show', $url->id);
+            ->route('urls.show', $newUrl->id);
     }
 
     public function show(int $id): View
