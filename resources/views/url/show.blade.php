@@ -36,6 +36,16 @@
                 <th>description</th>
                 <th>Дата создания</th>
             </tr>
+            @foreach($urlChecks as $urlCheck)
+            <tr>
+                <td>{{ $urlCheck->id }}</td>
+                <td>{{ $urlCheck->status }}</td>
+                <td>{{ $urlCheck->h1 }}</td>
+                <td>{{ $urlCheck->title }}</td>
+                <td>{{ $urlCheck->description }}</td>
+                <td>{{ $urlCheck->created_at }}</td>
+            </tr>
+            @endforeach
         </table>
     </div>
 @endsection
