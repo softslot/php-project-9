@@ -70,6 +70,10 @@ class UrlsController extends Controller
             abort('404');
         }
 
-        return view('url.show', compact('url'));
+        $urlChecks = DB::table('url_checks')
+            ->where('url_id', $url->id)
+            ->get();
+
+        return view('url.show', compact('url', 'urlChecks'));
     }
 }
