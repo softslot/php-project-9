@@ -63,24 +63,16 @@ class UrlsController extends Controller
                 ->route('urls.show', $url->id);
         }
 
-        DB::table('urls')->insert([
+        $id = DB::table('urls')->insertGetId([
             'name' => $normalizedName,
             'created_at' => now()->toDateTimeString(),
             'updated_at' => now()->toDateTimeString(),
         ]);
 
-        $newUrl = DB::table('urls')
-            ->where('name', $normalizedName)
-            ->first();
-
-        if (!$newUrl) {
-            abort('404');
-        }
-
         flash('Страница успешно добавлена')->success();
 
         return redirect()
-            ->route('urls.show', $newUrl->id);
+            ->route('urls.show', $id);
     }
 
     public function show(int $id): View
