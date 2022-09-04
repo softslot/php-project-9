@@ -17,24 +17,6 @@ class UrlsController extends Controller
         $urls = DB::table('urls')
             ->paginate($perPage);
 
-        $urlsChecks = DB::table('url_checks')
-            ->whereIn('url_id', $urls->pluck('id'))
-            ->orderByDesc('created_at')
-            ->groupBy('url_id')
-            ->get();
-
-        $urls->each(function ($url) use ($urlsChecks) {
-            $check = $urlsChecks->firstWhere('url_id', $url->id);
-            if ($check === null) {
-                return $url;
-            }
-
-            $url->last_check = $check->created_at;
-            $url->status = $check->status;
-
-            return $url;
-        });
-
         return view('url.index', compact('urls'));
     }
 
