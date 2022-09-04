@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class UrlChecksController
 {
@@ -13,9 +14,11 @@ class UrlChecksController
             abort('404');
         }
 
+        $response = Http::get($url->name);
+
         DB::table('url_checks')->insert([
             'url_id'     => $url->id,
-            'status'     => 200,
+            'status'     => $response->status(),
             'created_at' => now()->toDateTimeString(),
             'updated_at' => now()->toDateTimeString(),
         ]);
