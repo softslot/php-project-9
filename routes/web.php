@@ -4,18 +4,19 @@ use App\Http\Controllers\UrlChecksController;
 use App\Http\Controllers\UrlsController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('index');
-})->name('home');
+Route::get('/', static fn () => view('index'))
+    ->name('home');
 
-Route::get('urls', [UrlsController::class, 'index'])
-    ->name('urls.index');
+Route::controller(UrlsController::class)
+    ->name('urls.')
+    ->group(function () {
+        Route::get('urls', 'index')->name('index');
+        Route::post('urls','store')->name('store');
+        Route::get('urls/{id}','show')->name('show');
+    });
 
-Route::post('urls', [UrlsController::class, 'store'])
-    ->name('urls.store');
-
-Route::get('urls/{id}', [UrlsController::class, 'show'])
-    ->name('urls.show');
-
-Route::post('urls/{id}/checks', [UrlChecksController::class, 'store'])
-    ->name('url_checks.store');
+Route::controller(UrlChecksController::class)
+    ->name('url_checks.')
+    ->group(function () {
+        Route::post('urls/{id}/checks','store')->name('store');
+    });
