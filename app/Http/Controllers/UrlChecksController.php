@@ -25,7 +25,7 @@ class UrlChecksController
             return redirect()->route('urls.show', $url->id);
         }
 
-        $document = new Document($url->name, true);
+        $document = new Document($response->body());
         $h1 = optional($document->first('h1'))->text();
         $title = optional($document->first('title'))->text();
         $description = optional(
