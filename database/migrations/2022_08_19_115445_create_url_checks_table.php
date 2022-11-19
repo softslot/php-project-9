@@ -11,11 +11,11 @@ return new class extends Migration
         Schema::create('url_checks', function (Blueprint $table) {
             $table->id();
             $table->integer('url_id');
-            $table->integer('status');
+            $table->integer('status_code');
             $table->string('h1')->nullable();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
 
             $table->foreign('url_id')
                 ->references('id')
