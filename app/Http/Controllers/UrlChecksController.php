@@ -20,12 +20,15 @@ class UrlChecksController
         DB::table('url_checks')
             ->insert([
                 'url_id' => $url->id,
-                'status' => $response->status(),
+                'status_code' => $response->status(),
                 'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
             ]);
 
-        flash('Страница успешно проверена')->info();
+        if ($response->status() === 200) {
+            flash('Страница успешно проверена')->success();
+        } else {
+            flash('Проверка была выполнена успешно, но сервер ответил с ошибкой')->warning();
+        }
 
         return redirect()->route('urls.show', $url->id);
     }

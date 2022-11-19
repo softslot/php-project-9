@@ -14,10 +14,18 @@ class UrlsController extends Controller
         $perPage = 15;
 
         $urls = DB::table('urls')
+            ->select(['id', 'name'])
             ->paginate($perPage);
-        $urls->setPath('');
 
-        return view('url.index', compact('urls'));
+        $urlIds = $urls->pluck('id');
+
+        $urlChecks = DB::table('url_checks')
+            ->whereIn('url_id', $urlIds)
+            ->orderBy('created_at')
+            ->get()
+            ->keyBy('url_id');
+
+        return view('url.index', compact('urls', 'urlChecks'));
     }
 
     public function store(StoreUrlsRequest $request): RedirectResponse
@@ -30,16 +38,16 @@ class UrlsController extends Controller
 
         if ($url) {
             $id = $url->id;
-            flash('Страница уже существует')->success();
-            ;
+            $flashMessage = 'Страница уже существует';
         } else {
             $id = DB::table('urls')->insertGetId([
                 'name' => $normalizedUrlName,
                 'created_at' => now()->toDateTimeString(),
-                'updated_at' => now()->toDateTimeString(),
             ]);
-            flash('Страница успешно добавлена')->success();
+            $flashMessage = 'Страница успешно добавлена';
         }
+
+        flash($flashMessage)->success();
 
         return redirect()->route('urls.show', $id);
     }
