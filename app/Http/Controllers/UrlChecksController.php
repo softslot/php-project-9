@@ -29,8 +29,10 @@ class UrlChecksController
         $h1 = optional($document->first('h1'))->text();
         $title = optional($document->first('title'))->text();
         $description = optional(
-            $document->first("//meta[contains(@name, 'description')]",
-                Query::TYPE_XPATH)
+            $document->first(
+                "//meta[contains(@name, 'description')]",
+                Query::TYPE_XPATH
+            )
         )->getAttribute('content');
 
         DB::table('url_checks')
