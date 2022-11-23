@@ -10,6 +10,7 @@ deploy:
 	cp -n .env.example .env
 	php artisan key:gen --ansi
 	php artisan migrate
+	nmp run build
 
 PORT ?= 8000
 start:
