@@ -6,8 +6,9 @@ setup:
 	php artisan migrate
 	php artisan db:seed
 
+PORT ?= 8000
 start:
-	php artisan serve --host 0.0.0.0
+	PHP_CLI_SERVER_WORKERS=5 php -S 0.0.0.0:$(PORT) -t public
 
 validate:
 	composer validate
