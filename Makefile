@@ -9,7 +9,7 @@ setup:
 deploy:
 	cp -n .env.example .env
 	php artisan key:gen --ansi
-	php artisan migrate
+	php artisan migrate --force
 	npm run build
 
 PORT ?= 8000
