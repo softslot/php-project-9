@@ -71,7 +71,7 @@ class UrlsController extends Controller
     {
         $url = DB::table('urls')
             ->findOr($id, ['*'], function () {
-                abort('404');
+                abort(404);
             });
 
         $urlChecks = DB::table('url_checks')
@@ -83,7 +83,12 @@ class UrlsController extends Controller
 
     private function normalizeUrlName(string $url): string
     {
-        ['scheme' => $scheme, 'host' => $host] = parse_url($url);
+        $data = parse_url($url);
+        if (!is_array(parse_url($url))) {
+            throw new \Exception('URL parsed error!');
+        }
+
+        ['scheme' => $scheme, 'host' => $host] = $data;
 
         return "{$scheme}://{$host}";
     }
