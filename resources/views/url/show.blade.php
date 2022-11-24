@@ -27,7 +27,7 @@
             @csrf
             <input type="submit" class="btn btn-primary" value="Запустить проверку">
         </form>
-        <table class="table table-bordered table-hover text-nowrap">
+        <table class="table table-bordered table-hover text-nowrap" data-test="checks">
             <tr>
                 <th>ID</th>
                 <th>Код ответа</th>
