@@ -14,7 +14,7 @@ class UrlChecksController
     {
         $url = DB::table('urls')
             ->findOr($ulrId, ['*'], static function () {
-                abort('404');
+                abort(RedirectResponse::HTTP_NOT_FOUND);
             });
 
         try {

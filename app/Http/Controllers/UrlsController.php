@@ -19,7 +19,8 @@ class UrlsController extends Controller
             ->select(['id', 'name'])
             ->paginate($perPage);
 
-        $urlIds = $urls->pluck('id');
+        $urlIds = collect($urls->items())
+            ->pluck('id');
 
         $urlChecks = DB::table('url_checks')
             ->whereIn('url_id', $urlIds)
