@@ -9,7 +9,7 @@ class UrlsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_home_page_status(): void
+    public function testHomePageStatus(): void
     {
         $response = $this->get(route('home'));
 
@@ -17,7 +17,7 @@ class UrlsControllerTest extends TestCase
         $response->assertSeeText('Анализатор страниц');
     }
 
-    public function test_urls_page_status(): void
+    public function testUrlsPageStatus(): void
     {
         $response = $this->get(route('urls.index'));
 
@@ -25,36 +25,36 @@ class UrlsControllerTest extends TestCase
         $response->assertSeeText('Последняя проверка');
     }
 
-    public function test_add_url(): void
+    public function testAddUrl(): void
     {
         $response1 = $this->post(
             route('urls.store'),
             ['url' => ['name' => 'https://ru.hexlet.io/']]
         );
-        $response1->assertRedirect(route('urls.show',1));
+        $response1->assertRedirect(route('urls.show', 1));
 
-        $response2 = $this->get(route('urls.show',1));
+        $response2 = $this->get(route('urls.show', 1));
         $response2->assertSeeText('Сайт: https://ru.hexlet.io');
     }
 
-    public function test_add_two_identical_url(): void
+    public function testAddTwoIdenticalUrl(): void
     {
         $response1 = $this->post(
             route('urls.store'),
             ['url' => ['name' => 'https://ru.hexlet.io/']]
         );
-        $response1->assertRedirect(route('urls.show',1));
+        $response1->assertRedirect(route('urls.show', 1));
 
         $response2 = $this->post(
             route('urls.store'),
             ['url' => ['name' => 'https://ru.hexlet.io/homepage']]
         );
-        $response2->assertRedirect(route('urls.show',1));
+        $response2->assertRedirect(route('urls.show', 1));
     }
 
-    public function test_404(): void
+    public function test404(): void
     {
-        $response = $this->get(route('urls.show',999));
+        $response = $this->get(route('urls.show', 999));
 
         $response->assertNotFound();
     }
