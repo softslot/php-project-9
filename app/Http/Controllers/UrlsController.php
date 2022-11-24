@@ -81,6 +81,9 @@ class UrlsController extends Controller
         return view('url.show', compact('url', 'urlChecks'));
     }
 
+    /**
+     * @throws \Exception
+     */
     private function normalizeUrlName(string $url): string
     {
         $data = parse_url($url);
@@ -88,8 +91,6 @@ class UrlsController extends Controller
             throw new \Exception('URL parsed error!');
         }
 
-        ['scheme' => $scheme, 'host' => $host] = $data;
-
-        return "{$scheme}://{$host}";
+        return "{$data['scheme']}://{$data['host']}";
     }
 }
