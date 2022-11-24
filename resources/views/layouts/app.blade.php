@@ -6,9 +6,14 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <title>Анализатор страниц</title>
+
     @vite(['resources/sass/app.scss'])
 
-    <title>Анализатор страниц</title>
+    <script>
+        /*to prevent Firefox FOUC, this must be here*/
+        let FF_FOUC_FIX;
+    </script>
 </head>
 <body class="min-vh-100 d-flex flex-column">
     <header class="flex-shrink-0">
