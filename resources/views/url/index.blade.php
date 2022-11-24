@@ -15,8 +15,8 @@
                     <tr>
                         <td>{{ $url->id }}</td>
                         <td><a href="{{ route('urls.show', $url->id) }}">{{ $url->name }}</a></td>
-                        <td>{{ $urlChecks->get($url->id)->status_code ?? '' }}</td>
                         <td>{{ $urlChecks->get($url->id)->created_at ?? '' }}</td>
+                        <td>{{ $urlChecks->get($url->id)->status_code ?? '' }}</td>
                     </tr>
                 @endforeach
             </table>
