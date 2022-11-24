@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUrlsRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class UrlsController extends Controller
@@ -28,8 +30,22 @@ class UrlsController extends Controller
         return view('url.index', compact('urls', 'urlChecks'));
     }
 
-    public function store(StoreUrlsRequest $request): RedirectResponse
+    public function store(Request $request): Response | RedirectResponse
     {
+        $validator = Validator::make(
+            $request->all(),
+            ['url.name' => 'required|max:255|url'],
+            ['*' => 'Некорректный URL'],
+        );
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+
+            return response()
+                ->view('index', compact('errors'))
+                ->setStatusCode(422);
+        }
+
         $normalizedUrlName = $this->normalizeUrlName($request['url']['name']);
 
         $url = DB::table('urls')
