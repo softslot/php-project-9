@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\RedirectResponse;
+//use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+//use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -31,7 +32,7 @@ class UrlsController extends Controller
         return view('url.index', compact('urls', 'urlChecks'));
     }
 
-    public function store(Request $request): Response | RedirectResponse
+    public function store(Request $request): \Illuminate\Http\Response | \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make(
             $request->all(),
@@ -42,8 +43,7 @@ class UrlsController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
 
-            return response()
-                ->view('index', compact('errors'))
+            return Response::view('index', compact('errors'))
                 ->setStatusCode(422);
         }
 
@@ -66,7 +66,7 @@ class UrlsController extends Controller
 
         flash($flashMessage)->success();
 
-        return redirect()->route('urls.show', $id);
+        return Response::redirectToRoute('urls.show', $id);
     }
 
     public function show(int $id): View

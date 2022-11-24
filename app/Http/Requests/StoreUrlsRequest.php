@@ -24,4 +24,13 @@ class StoreUrlsRequest extends FormRequest
             'url.name.*' => 'Некорректный URL',
         ];
     }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $errors = $validator->errors();
+
+        return response()
+            ->view('index', compact('errors'))
+            ->setStatusCode(422);
+    }
 }
