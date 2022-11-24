@@ -87,9 +87,6 @@ class UrlsController extends Controller
     private function normalizeUrlName(string $url): string
     {
         $data = parse_url($url);
-        if (!is_array(parse_url($url))) {
-            throw new \Exception('URL parsed error!');
-        }
 
         return "{$data['scheme']}://{$data['host']}";
     }
