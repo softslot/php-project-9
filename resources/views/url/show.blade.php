@@ -4,8 +4,8 @@
 
     @include('flash::message')
 
-    <div class="container-lg">
-        <h1 class="mt-5 mb-3">Сайт: {{ $url->name }}</h1>
+    <div class="container-lg mt-3">
+        <h1>Сайт: {{ $url->name }}</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-hover text-nowrap" data-test="url">
                 <tr>
@@ -25,9 +25,9 @@
         <h2 class="mt-5 mb-3">Проверки</h2>
         <form method="post" action="{{ route('url_checks.store', $url->id) }}">
             @csrf
-            <input type="submit" class="btn btn-primary" value="Запустить проверку">
+            <input type="submit" class="btn btn-primary mb-3" value="Запустить проверку">
         </form>
-        <table class="table table-bordered table-hover text-nowrap" data-test="checks">
+        <table class="table table-bordered table-hover" data-test="checks">
             <tr>
                 <th>ID</th>
                 <th>Код ответа</th>
