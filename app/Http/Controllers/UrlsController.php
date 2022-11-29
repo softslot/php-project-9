@@ -42,7 +42,7 @@ class UrlsController extends Controller
 //            $errors = $validator->errors();
 
 
-            return redirect()->route('home')->withErrors($validator->errors());
+            return redirect()->route('urls.index')->withErrors($validator->errors());
 //            return Response::view('index', compact('errors'))
 //                ->setStatusCode(422);
         }
