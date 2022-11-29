@@ -3,58 +3,86 @@
 namespace Tests\Feature\Http\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class UrlsControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testHomePageStatus(): void
+    private string $url;
+    private int $urlId;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->url = 'https://ru.hexlet.io';
+        $data = [
+            'name' => $this->url,
+            'created_at' => now()->toDateTimeString(),
+        ];
+
+        $this->urlId = DB::table('urls')->insertGetId($data);
+    }
+
+    public function testHomePage(): void
     {
         $response = $this->get(route('home'));
 
         $response->assertOk();
-        $response->assertSeeText('Анализатор страниц');
     }
 
-    public function testUrlsPageStatus(): void
+    public function testUrlsPage(): void
     {
         $response = $this->get(route('urls.index'));
 
         $response->assertOk();
-        $response->assertSeeText('Последняя проверка');
     }
 
-    public function testAddUrl(): void
+    public function testShowPage(): void
     {
-        $response1 = $this->post(
-            route('urls.store'),
-            ['url' => ['name' => 'https://ru.hexlet.io/']]
-        );
-        $response1->assertRedirect(route('urls.show', 1));
+        $response = $this->get(route('urls.show', $this->urlId));
 
-        $response2 = $this->get(route('urls.show', 1));
-        $response2->assertSeeText('Сайт: https://ru.hexlet.io');
+        $response->assertOk();
     }
 
-    public function testAddTwoIdenticalUrl(): void
+    public function testStoreUrl(): void
     {
-        $response1 = $this->post(
+        $data = ['name' => 'https://google.com'];
+        $response = $this->post(
             route('urls.store'),
-            ['url' => ['name' => 'https://ru.hexlet.io/']]
+            ['url' => $data]
         );
-        $response1->assertRedirect(route('urls.show', 1));
 
-        $response2 = $this->post(
-            route('urls.store'),
-            ['url' => ['name' => 'https://ru.hexlet.io/homepage']]
-        );
-        $response2->assertRedirect(route('urls.show', 1));
+        $response->assertRedirect();
+        $this->assertDatabaseHas('urls', $data);
     }
 
-    public function test404(): void
+    public function testStoreTwoIdenticalUrl():void
     {
-        $response = $this->get(route('urls.show', 999));
+        $this->post(
+            route('urls.store'),
+            ['url' => ['name' => $this->url]]
+        );
+
+        $this->assertDatabaseCount('urls', 1);
+    }
+
+    public function testInvalidUrl(): void
+    {
+        $response = $this->post(
+            route('urls.store'),
+            ['url' => ['name' => 'qwerty']]
+        );
+
+        $response->assertStatus(422);
+    }
+
+    public function testNotFound404(): void
+    {
+        $urlId = 999;
+        $response = $this->get(route('urls.show', $urlId));
 
         $response->assertNotFound();
     }
