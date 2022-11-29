@@ -30,7 +30,7 @@ class UrlsController extends Controller
         return view('url.index', compact('urls', 'urlChecks'));
     }
 
-    public function store(Request $request): \Illuminate\Http\Response | \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make(
             $request->all(),
@@ -39,10 +39,12 @@ class UrlsController extends Controller
         );
 
         if ($validator->fails()) {
-            $errors = $validator->errors();
+//            $errors = $validator->errors();
 
-            return Response::view('index', compact('errors'))
-                ->setStatusCode(422);
+
+            return redirect()->route('home')->withErrors($validator->errors());
+//            return Response::view('index', compact('errors'))
+//                ->setStatusCode(422);
         }
 
         $normalizedUrlName = $this->normalizeUrlName($request['url']['name']);
@@ -81,9 +83,6 @@ class UrlsController extends Controller
         return view('url.show', compact('url', 'urlChecks'));
     }
 
-    /**
-     * @throws \Exception
-     */
     private function normalizeUrlName(string $url): string
     {
         $data = parse_url($url);
