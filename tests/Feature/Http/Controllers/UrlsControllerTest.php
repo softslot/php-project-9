@@ -59,7 +59,7 @@ class UrlsControllerTest extends TestCase
         $this->assertDatabaseHas('urls', $data);
     }
 
-    public function testStoreTwoIdenticalUrl():void
+    public function testStoreTwoIdenticalUrl(): void
     {
         $this->post(
             route('urls.store'),
