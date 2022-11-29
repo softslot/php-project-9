@@ -30,7 +30,7 @@ class UrlsController extends Controller
         return view('url.index', compact('urls', 'urlChecks'));
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -39,12 +39,13 @@ class UrlsController extends Controller
         );
 
         if ($validator->fails()) {
-//            $errors = $validator->errors();
+            $errors = $validator->errors();
 
 
-            return redirect()->route('urls.index')->withErrors($validator->errors());
-//            return Response::view('index', compact('errors'))
-//                ->setStatusCode(422);
+//            return redirect(status: 422)->route('urls.index')->withErrors($validator->errors());
+
+            return \response()->view('index', compact('errors'))
+                ->setStatusCode(422);
         }
 
         $normalizedUrlName = $this->normalizeUrlName($request['url']['name']);
