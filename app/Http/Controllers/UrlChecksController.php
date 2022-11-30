@@ -14,15 +14,18 @@ class UrlChecksController
     {
         $url = DB::table('urls')
             ->findOr($ulrId, ['*'], static function () {
-                abort(RedirectResponse::HTTP_NOT_FOUND);
+                abort(404);
             });
 
         try {
             $response = Http::get($url->name);
-        } catch (\Exception) {
-            flash('Произошла ошибка при проверке, не удалось подключиться')->error();
+        } catch (\Exception $exception) {
+            $errorMessage = $exception->getMessage();
+            flash($errorMessage)->error();
 
-            return redirect()->route('urls.show', $url->id);
+            return redirect()
+                ->route('urls.show', $url->id)
+                ->withErrors($errorMessage);
         }
 
         $document = new Document($response->body());
