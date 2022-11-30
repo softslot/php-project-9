@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-    @include('flash::message')
-
     <div class="container-lg mt-3">
         <h1>Сайт: {{ $url->name }}</h1>
         <div class="table-responsive">
