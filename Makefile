@@ -34,4 +34,4 @@ test:
 	composer exec --verbose phpunit tests
 
 test-coverage:
-	composer exec --verbose phpunit tests -- --coverage-html ./build/logs/html
+	XDEBUG_MODE=coverage php artisan test --coverage-clover build/logs/clover.xml
