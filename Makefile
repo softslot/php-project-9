@@ -3,8 +3,10 @@ setup:
 	cp -n .env.example .env
 	php artisan key:gen --ansi
 	touch database/database.sqlite
-	php artisan migrate
+	php artisan migrate:refresh
 	php artisan db:seed
+	npm ci
+	npm run build
 
 deploy:
 	cp -n .env.example .env
