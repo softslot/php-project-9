@@ -35,12 +35,9 @@ class UrlsController extends Controller
         $validator = Validator::make(
             $request->all(),
             ['url.name' => 'required|max:255|url'],
-            ['*' => 'Некорректный URL'],
         );
 
         if ($validator->fails()) {
-            $errors = $validator->errors();
-
             flash('Некорректный URL')->error();
 
             return Response::view('index')
@@ -64,7 +61,6 @@ class UrlsController extends Controller
             flash('Страница успешно добавлена')->success();
         }
 
-//        return Response::redirectToRoute('urls.show', $id);
         return redirect()->route('urls.show', $id);
     }
 
