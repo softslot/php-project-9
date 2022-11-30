@@ -41,7 +41,9 @@ class UrlsController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
 
-            return Response::view('index', compact('errors'))
+            flash('Некорректный URL')->error();
+
+            return Response::view('index')
                 ->setStatusCode(422);
         }
 
@@ -53,18 +55,17 @@ class UrlsController extends Controller
 
         if ($url) {
             $id = $url->id;
-            $flashMessage = 'Страница уже существует';
+            flash('Страница уже существует')->success();
         } else {
             $id = DB::table('urls')->insertGetId([
                 'name' => $normalizedUrlName,
                 'created_at' => now()->toDateTimeString(),
             ]);
-            $flashMessage = 'Страница успешно добавлена';
+            flash('Страница успешно добавлена')->success();
         }
 
-        flash($flashMessage)->success();
-
-        return Response::redirectToRoute('urls.show', $id);
+//        return Response::redirectToRoute('urls.show', $id);
+        return redirect()->route('urls.show', $id);
     }
 
     public function show(int $id): View

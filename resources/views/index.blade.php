@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-        <div class="alert alert-danger" role="alert">
-            {{ $error }}
-        </div>
-        @endforeach
-    @endif
+{{--    @if($errors->any())--}}
+{{--        @foreach($errors->all() as $error)--}}
+{{--        <div class="alert alert-danger" role="alert">--}}
+{{--            {{ $error }}--}}
+{{--        </div>--}}
+{{--        @endforeach--}}
+{{--    @endif--}}
+
+    @include('flash::message')
 
     <div class="container-lg mt-3">
         <div class="row">
