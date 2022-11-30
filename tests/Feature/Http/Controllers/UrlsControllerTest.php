@@ -56,6 +56,7 @@ class UrlsControllerTest extends TestCase
         );
 
         $response->assertRedirect();
+        $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('urls', $data);
     }
 
