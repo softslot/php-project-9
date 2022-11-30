@@ -30,7 +30,7 @@ class UrlsController extends Controller
         return view('url.index', compact('urls', 'urlChecks'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\Response | \Illuminate\Http\RedirectResponse
     {
         $validator = Validator::make(
             $request->all(),
@@ -41,10 +41,7 @@ class UrlsController extends Controller
         if ($validator->fails()) {
             $errors = $validator->errors();
 
-
-//            return redirect(status: 422)->route('urls.index')->withErrors($validator->errors());
-
-            return \response()->view('index', compact('errors'))
+            return Response::view('index', compact('errors'))
                 ->setStatusCode(422);
         }
 
