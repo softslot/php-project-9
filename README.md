@@ -12,3 +12,24 @@
 <hr>
 
 Page Analyzer – is a website that analyzes the specified pages for SEO suitability.
+
+Demo: https://web-production-655d.up.railway.app/
+
+### Requirements
+
+- PHP 8.1+
+- Composer 2.0
+- Node.js
+- SQLite
+
+### Setup
+
+```sh
+make setup
+```
+
+### Run
+
+```sh
+make start
+```
