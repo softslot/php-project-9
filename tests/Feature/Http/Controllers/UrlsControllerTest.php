@@ -18,12 +18,11 @@ class UrlsControllerTest extends TestCase
         parent::setUp();
 
         $this->url = 'https://ru.hexlet.io';
-        $data = [
-            'name' => $this->url,
-            'created_at' => now()->toDateTimeString(),
-        ];
-
-        $this->urlId = DB::table('urls')->insertGetId($data);
+        $this->urlId = DB::table('urls')
+            ->insertGetId([
+                'name' => $this->url,
+                'created_at' => now()->toDateTimeString(),
+            ]);
     }
 
     public function testHomePage(): void

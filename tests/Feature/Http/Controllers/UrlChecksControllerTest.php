@@ -11,51 +11,40 @@ class UrlChecksControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    private string $url;
+    private int $urlId;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->url = 'https://example.com';
+        $this->urlId = DB::table('urls')
+            ->insertGetId([
+                'name' => $this->url,
+                'created_at' => now()->toDateTimeString(),
+            ]);
+    }
+
     public function testUrlCheck(): void
     {
-        $url = 'https://example.com';
-
         $body = file_get_contents(__DIR__ . '/fixtures/example_com.html');
 
         Http::fake([
-            $url => Http::response($body),
+            $this->url => Http::response($body),
         ]);
 
-        $urlId = DB::table('urls')
-            ->insertGetId([
-                'name' => $url,
-                'created_at' => now()->toDateTimeString(),
-            ]);
-
-        $response1 = $this->post(route('url_checks.store', $urlId));
-        $response1->assertRedirectToRoute('urls.show', [$urlId]);
-
-        $response2 = $this->get(route('urls.show', $urlId));
-        $response2->assertSeeText('200');
-        $response2->assertSeeText('Page Title');
-        $response2->assertSeeText('Page Description');
-        $response2->assertSeeText('Page H1');
-    }
-
-    public function testErrorStatus(): void
-    {
-        $url = 'https://domain.com';
-
-        Http::fake([
-            $url => Http::response('content', 403),
+        $response = $this->post(route('url_checks.store', $this->urlId));
+        $response->assertRedirect();
+        $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('url_checks', [
+            'url_id' => $this->urlId,
+            'status_code' => 200,
+            'h1' => 'Page H1',
+            'title' => 'Page Title',
+            'description' => 'Page Description',
         ]);
-
-        $urlId = DB::table('urls')
-            ->insertGetId([
-                'name' => $url,
-                'created_at' => now()->toDateTimeString(),
-            ]);
-
-        $response1 = $this->post(route('url_checks.store', $urlId));
-        $response1->assertRedirectToRoute('urls.show', [$urlId]);
-
-        $response2 = $this->get(route('urls.show', $urlId));
-        $response2->assertSeeText('403');
     }
 
     public function testCheckNonExistentUrl(): void
