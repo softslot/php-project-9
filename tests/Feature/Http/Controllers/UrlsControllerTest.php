@@ -62,11 +62,13 @@ class UrlsControllerTest extends TestCase
 
     public function testStoreTwoIdenticalUrl(): void
     {
-        $this->post(
+        $response = $this->post(
             route('urls.store'),
             ['url' => ['name' => $this->url]]
         );
 
+        $response->assertRedirect();
+        $response->assertSessionHasNoErrors();
         $this->assertDatabaseCount('urls', 1);
     }
 
