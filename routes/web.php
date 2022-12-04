@@ -4,8 +4,7 @@ use App\Http\Controllers\UrlChecksController;
 use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', static fn () => view('index'))
-    ->name('home');
+Route::view('/', 'index')->name('home');
 
 Route::controller(UrlController::class)
     ->name('urls.')
