@@ -38,7 +38,7 @@ class UrlChecksControllerTest extends TestCase
             $this->url => Http::response($body),
         ]);
 
-        $response = $this->post(route('url_checks.store', $this->urlId));
+        $response = $this->post(route('urls.checks.store', $this->urlId));
 
         $response->assertRedirect();
         $response->assertSessionHasNoErrors();
@@ -54,7 +54,7 @@ class UrlChecksControllerTest extends TestCase
     public function testCheckNonExistentUrl(): void
     {
         $urlId = 999;
-        $response1 = $this->post(route('url_checks.store', $urlId));
+        $response1 = $this->post(route('urls.checks.store', $urlId));
 
         $response1->assertNotFound();
     }
