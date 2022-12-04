@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
-class UrlsController extends Controller
+class UrlController extends Controller
 {
     public function index(): View
     {
