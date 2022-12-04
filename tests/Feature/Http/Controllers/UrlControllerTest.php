@@ -22,7 +22,7 @@ class UrlControllerTest extends TestCase
             ]);
     }
 
-    public function testUrlsPage(): void
+    public function testIndexPage(): void
     {
         $response = $this->get(route('urls.index'));
 
@@ -36,7 +36,7 @@ class UrlControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testStoreUrl(): void
+    public function testStore(): void
     {
         $data = ['name' => 'https://google.com'];
         $response = $this->post(
@@ -71,7 +71,7 @@ class UrlControllerTest extends TestCase
         $response->assertStatus(422);
     }
 
-    public function testNotFound404(): void
+    public function testNotFoundPage(): void
     {
         $urlId = 999;
         $response = $this->get(route('urls.show', $urlId));

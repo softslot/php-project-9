@@ -23,17 +23,24 @@ class UrlChecksControllerTest extends TestCase
             ]);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testUrlCheck(): void
     {
-        $body = file_get_contents(__DIR__ . '/fixtures/example_com.html');
+        $fixturePath = __DIR__ . '/fixtures/example_com.html';
+        $body = file_get_contents($fixturePath);
+        if ($body === false) {
+            throw new \RuntimeException("Fixture not found: {$fixturePath}");
+        }
 
         Http::fake([
             $this->url => Http::response($body),
         ]);
 
         $response = $this->post(route('url_checks.store', $this->urlId));
+
         $response->assertRedirect();
-        $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $this->assertDatabaseHas('url_checks', [
             'url_id' => $this->urlId,
@@ -48,6 +55,7 @@ class UrlChecksControllerTest extends TestCase
     {
         $urlId = 999;
         $response1 = $this->post(route('url_checks.store', $urlId));
+
         $response1->assertNotFound();
     }
 }

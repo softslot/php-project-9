@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 
-class IndexPageTest extends TestCase
+class MainPageTest extends TestCase
 {
-    public function testIndexPage(): void
+    public function test(): void
     {
         $response = $this->get(route('home'));
 
