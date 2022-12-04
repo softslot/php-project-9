@@ -22,13 +22,6 @@ class UrlControllerTest extends TestCase
             ]);
     }
 
-    public function testHomePage(): void
-    {
-        $response = $this->get(route('home'));
-
-        $response->assertOk();
-    }
-
     public function testUrlsPage(): void
     {
         $response = $this->get(route('urls.index'));
