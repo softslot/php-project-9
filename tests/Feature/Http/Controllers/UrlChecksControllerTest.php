@@ -2,15 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 
 class UrlChecksControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     private string $url;
     private int $urlId;
 
