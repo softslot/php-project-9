@@ -69,6 +69,7 @@ class UrlControllerTest extends TestCase
         );
 
         $response->assertStatus(422);
+        $response->assertSessionHasErrors();
     }
 
     public function testNotFoundPage(): void
