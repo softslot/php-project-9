@@ -7,7 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
-class UrlChecksController
+class UrlCheckController
 {
     public function store(int $ulrId): RedirectResponse
     {
