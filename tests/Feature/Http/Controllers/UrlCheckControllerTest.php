@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 
-class UrlChecksControllerTest extends TestCase
+class UrlCheckControllerTest extends TestCase
 {
     private string $url;
     private int $urlId;
