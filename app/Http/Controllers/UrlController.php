@@ -14,11 +14,9 @@ class UrlController extends Controller
 {
     public function index(): View
     {
-        $perPage = 15;
-
         $urls = DB::table('urls')
             ->select(['id', 'name'])
-            ->paginate($perPage);
+            ->paginate();
 
         $urlIds = collect($urls->items())
             ->pluck('id');

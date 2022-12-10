@@ -20,6 +20,6 @@
             @endforeach
         </table>
 
-        {{ $urls->links('vendor.pagination.bootstrap-5') }}
+        {{ $urls->links() }}
     </div>
 @endsection
