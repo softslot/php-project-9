@@ -43,7 +43,7 @@ class UrlController extends Controller
             $errors = new ViewErrorBag();
             session()->flash('errors', $errors->put(
                 'default',
-                new MessageBag(['Некорректный URL'])
+                $validator->messages()
             ));
 
             return Response::view('index')
