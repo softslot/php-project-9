@@ -36,8 +36,10 @@
     </header>
 
     <main class="flex-grow-1">
-        @include('flash::message')
-        @yield('content')
+        <div class="container-lg mt-3">
+            @include('flash::message')
+            @yield('content')
+        </div>
     </main>
 
     <footer class="border-top py-3 mt-5 flex-shrink-0">
