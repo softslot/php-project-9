@@ -31,7 +31,7 @@ class UrlCheckControllerTest extends TestCase
         $fixturePath = __DIR__ . '/fixtures/example_com.html';
         $body = file_get_contents($fixturePath);
         if ($body === false) {
-            throw new \RuntimeException("Fixture not found: {$fixturePath}");
+            throw new \RuntimeException("Fixture incorrect: {$fixturePath}");
         }
 
         Http::fake([
