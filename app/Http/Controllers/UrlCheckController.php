@@ -17,7 +17,7 @@ class UrlCheckController
 
         try {
             $response = Http::get($url->name);
-            $document = new Document($response->body());
+            $document = new Document($response->getBody()->getContents());
         } catch (\Exception $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
@@ -30,7 +30,7 @@ class UrlCheckController
         DB::table('url_checks')
             ->insert([
                 'url_id' => $url->id,
-                'status_code' => $response->status(),
+                'status_code' => $response->getStatusCode(),
                 'h1' => optional($document->first('h1'))->text(),
                 'title' => optional($document->first('title'))->text(),
                 'description' => optional($document->first('meta[name=description]'))
