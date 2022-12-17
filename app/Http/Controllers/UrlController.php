@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\MessageBag;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\View\View;
 
@@ -72,10 +71,9 @@ class UrlController extends Controller
 
     public function show(int $id): View
     {
-        $url = DB::table('urls')
-            ->findOr($id, ['*'], function () {
-                abort(404);
-            });
+        $url = DB::table('urls')->find($id);
+
+        abort_unless($url, 404);
 
         $urlChecks = DB::table('url_checks')
             ->where('url_id', $url->id)

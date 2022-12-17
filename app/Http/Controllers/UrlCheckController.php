@@ -11,10 +11,9 @@ class UrlCheckController
 {
     public function store(int $ulrId): RedirectResponse
     {
-        $url = DB::table('urls')
-            ->findOr($ulrId, ['*'], static function () {
-                abort(404);
-            });
+        $url = DB::table('urls')->find($ulrId);
+
+        abort_unless($url, 404);
 
         try {
             $response = Http::get($url->name);
@@ -39,7 +38,7 @@ class UrlCheckController
                 'created_at' => now()->toDateTimeString(),
             ]);
 
-        if ($response->status() !== 200) {
+        if ($response->serverError()) {
             flash('Проверка была выполнена успешно, но сервер ответил с ошибкой')->warning();
         } else {
             flash('Страница успешно проверена')->success();
