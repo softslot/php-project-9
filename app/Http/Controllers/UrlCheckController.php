@@ -38,7 +38,7 @@ class UrlCheckController
                 'created_at' => now()->toDateTimeString(),
             ]);
 
-        if ($response->serverError()) {
+        if (true) {
             flash('Проверка была выполнена успешно, но сервер ответил с ошибкой')->warning();
         } else {
             flash('Страница успешно проверена')->success();
