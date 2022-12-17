@@ -17,6 +17,7 @@ class UrlCheckController
 
         try {
             $response = Http::get($url->name);
+            $document = new Document($response->body());
         } catch (\Exception $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
@@ -26,7 +27,6 @@ class UrlCheckController
                 ->withErrors($errorMessage);
         }
 
-        $document = new Document($response->body());
         DB::table('url_checks')
             ->insert([
                 'url_id' => $url->id,
