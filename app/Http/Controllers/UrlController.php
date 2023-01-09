@@ -39,8 +39,7 @@ class UrlController extends Controller
         if ($validator->fails()) {
             flash('Некорректный URL')->error();
 
-            $errors = new ViewErrorBag();
-            session()->flash('errors', $errors->put(
+            session()->flash('errors', (new ViewErrorBag())->put(
                 'default',
                 $validator->messages()
             ));
