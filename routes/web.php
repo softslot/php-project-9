@@ -13,6 +13,6 @@ Route::resource('urls', UrlController::class)
 Route::resource('urls.checks', UrlCheckController::class)
     ->only(['store']);
 
-Route::any('{all}', function(){
+Route::any('{all}', function () {
         abort(404);
 })->where('all', '.*');

@@ -53,9 +53,16 @@ class UrlCheckControllerTest extends TestCase
 
     public function testCheckNonExistentUrl(): void
     {
-        $urlId = 999;
-        $response1 = $this->post(route('urls.checks.store', $urlId));
+        $lastUrl = DB::table('urls')
+            ->select('id')
+            ->orderByDesc('id')
+            ->first();
 
-        $response1->assertNotFound();
+        $lastId = $lastUrl->id ?? 0;
+        $nonExistsId = $lastId + 1;
+
+        $response = $this->post(route('urls.checks.store', $nonExistsId));
+
+        $response->assertNotFound();
     }
 }
