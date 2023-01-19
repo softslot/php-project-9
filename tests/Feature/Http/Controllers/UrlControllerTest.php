@@ -74,8 +74,15 @@ class UrlControllerTest extends TestCase
 
     public function testNotFoundPage(): void
     {
-        $urlId = 999;
-        $response = $this->get(route('urls.show', $urlId));
+        $lastUrl = DB::table('urls')
+            ->select('id')
+            ->orderByDesc('id')
+            ->first();
+
+        $lastId = $lastUrl->id ?? 0;
+        $nonExistsId = $lastId + 1;
+
+        $response = $this->get(route('urls.show', $nonExistsId));
 
         $response->assertNotFound();
     }
