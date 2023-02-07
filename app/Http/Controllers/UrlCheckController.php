@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use DiDom\Document;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Str;
 
+/**
+ * @throws ConnectionException
+ */
 class UrlCheckController
 {
     public function store(int $ulrId): RedirectResponse
@@ -19,7 +23,7 @@ class UrlCheckController
 
         try {
             $response = Http::get($url->name);
-        } catch (\Illuminate\Http\Client\ConnectionException $exception) {
+        } catch (ConnectionException $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
 
