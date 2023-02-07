@@ -19,33 +19,34 @@ class UrlCheckController
 
         try {
             $response = Http::get($url->name);
-            $document = new Document($response->body());
-
-            $h1 = optional($document->first('h1'))->text();
-            $title = optional($document->first('title'))->text();
-            $description = optional($document->first('meta[name=description]'))->getAttribute('content');
-
-            DB::table('url_checks')
-                ->insert([
-                    'url_id' => $url->id,
-                    'status_code' => $response->status(),
-                    'h1' => Str::limit($h1, 250, '...'),
-                    'title' => Str::limit($title, 250, '...'),
-                    'description' => Str::limit($description, 250, '...'),
-                    'created_at' => now()->toDateTimeString(),
-                ]);
-
-            if ($response->serverError()) {
-                flash('Проверка была выполнена успешно, но сервер ответил с ошибкой')->warning();
-            } else {
-                flash('Страница успешно проверена')->success();
-            }
         } catch (\Illuminate\Http\Client\ConnectionException $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
 
             return Response::redirectToRoute('urls.show', $url->id)
                 ->withErrors($errorMessage);
+        }
+
+        $document = new Document($response->body());
+
+        $h1 = optional($document->first('h1'))->text();
+        $title = optional($document->first('title'))->text();
+        $description = optional($document->first('meta[name=description]'))->getAttribute('content');
+
+        DB::table('url_checks')
+            ->insert([
+                'url_id' => $url->id,
+                'status_code' => $response->status(),
+                'h1' => Str::limit($h1, 250, '...'),
+                'title' => Str::limit($title, 250, '...'),
+                'description' => Str::limit($description, 250, '...'),
+                'created_at' => now()->toDateTimeString(),
+            ]);
+
+        if ($response->serverError()) {
+            flash('Проверка была выполнена успешно, но сервер ответил с ошибкой')->warning();
+        } else {
+            flash('Страница успешно проверена')->success();
         }
 
         return Response::redirectToRoute('urls.show', $url->id);
