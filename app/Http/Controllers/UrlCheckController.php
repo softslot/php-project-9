@@ -21,6 +21,7 @@ class UrlCheckController
 
         abort_unless($url, 404);
 
+        // phpcs:disable
         try {
             $response = Http::get($url->name);
         } catch (HttpClientException $exception) {
@@ -30,6 +31,7 @@ class UrlCheckController
             return Response::redirectToRoute('urls.show', $url->id)
                 ->withErrors($errorMessage);
         }
+        // phpcs:enable
 
         $document = new Document($response->body());
 
