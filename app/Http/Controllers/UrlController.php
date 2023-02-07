@@ -7,11 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ViewErrorBag;
-use Illuminate\View\View;
 
 class UrlController extends Controller
 {
-    public function index(): View
+    public function index(): \Illuminate\Http\Response
     {
         $urls = DB::table('urls')
             ->select(['id', 'name'])
@@ -26,7 +25,7 @@ class UrlController extends Controller
             ->get()
             ->keyBy('url_id');
 
-        return view('url.index', compact('urls', 'urlChecks'));
+        return Response::view('url.index', compact('urls', 'urlChecks'));
     }
 
     public function store(Request $request): \Illuminate\Http\Response | \Illuminate\Http\RedirectResponse
@@ -65,10 +64,10 @@ class UrlController extends Controller
             flash('Страница успешно добавлена')->success();
         }
 
-        return redirect()->route('urls.show', $id);
+        return Response::redirectToRoute('urls.show', $id);
     }
 
-    public function show(int $id): View
+    public function show(int $id): \Illuminate\Http\Response
     {
         $url = DB::table('urls')->find($id);
 
@@ -78,7 +77,7 @@ class UrlController extends Controller
             ->where('url_id', $url->id)
             ->get();
 
-        return view('url.show', compact('url', 'urlChecks'));
+        return Response::view('url.show', compact('url', 'urlChecks'));
     }
 
     private function normalizeUrlName(string $url): string

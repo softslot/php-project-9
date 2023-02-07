@@ -6,6 +6,7 @@ use DiDom\Document;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Response;
 
 class UrlCheckController
 {
@@ -39,11 +40,10 @@ class UrlCheckController
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
 
-            return redirect()
-                ->route('urls.show', $url->id)
+            return Response::redirectToRoute('urls.show', $url->id)
                 ->withErrors($errorMessage);
         }
 
-        return redirect()->route('urls.show', $url->id);
+        return Response::redirectToRoute('urls.show', $url->id);
     }
 }
