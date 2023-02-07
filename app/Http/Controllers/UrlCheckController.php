@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 
 class UrlCheckController
 {
@@ -28,9 +29,9 @@ class UrlCheckController
                 ->insert([
                     'url_id' => $url->id,
                     'status_code' => $response->status(),
-                    'h1' => \Str::limit($h1, 250, '...'),
-                    'title' => \Str::limit($title, 250, '...'),
-                    'description' => \Str::limit($description, 250, '...'),
+                    'h1' => Str::limit($h1, 250, '...'),
+                    'title' => Str::limit($title, 250, '...'),
+                    'description' => Str::limit($description, 250, '...'),
                     'created_at' => now()->toDateTimeString(),
                 ]);
 
@@ -39,7 +40,7 @@ class UrlCheckController
             } else {
                 flash('Страница успешно проверена')->success();
             }
-        } catch (\Exception $exception) {
+        } catch (\Illuminate\Http\Client\ConnectionException $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
 
