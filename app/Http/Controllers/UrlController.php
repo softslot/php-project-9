@@ -14,6 +14,7 @@ class UrlController extends Controller
     {
         $urls = DB::table('urls')
             ->select(['id', 'name'])
+            ->orderByDesc('created_at')
             ->paginate();
 
         $urlIds = collect($urls->items())
