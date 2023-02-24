@@ -35,9 +35,9 @@ class UrlCheckController
         $data = [
             'url_id' => $url->id,
             'status_code' => $response->status(),
-            'h1' => Str::limit($h1, 250, '...'),
-            'title' => Str::limit($title, 250, '...'),
-            'description' => Str::limit($description, 250, '...'),
+            'h1' => $h1,
+            'title' => $title,
+            'description' => $description,
             'created_at' => now()->toDateTimeString(),
         ];
 
