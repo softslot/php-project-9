@@ -75,6 +75,7 @@ class UrlController extends Controller
 
         $urlChecks = DB::table('url_checks')
             ->where('url_id', $url->id)
+            ->orderByDesc('created_at')
             ->get();
 
         return Response::view('url.show', compact('url', 'urlChecks'));
