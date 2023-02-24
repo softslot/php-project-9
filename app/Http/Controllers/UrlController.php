@@ -33,18 +33,24 @@ class UrlController extends Controller
     {
         $validator = Validator::make(
             $request->all(),
-            ['url.name' => 'required|max:255|url'],
+            [
+                'url.name' => 'required|max:255|url',
+            ],
+            [
+                'url.name.required' => 'URL не должен быть пустым',
+                'url.name' => 'Некорректный URL',
+            ]
         );
 
         if ($validator->fails()) {
-            flash('Некорректный URL')->error();
+            $validationErrors = $validator->messages();
 
             session()->flash('errors', (new ViewErrorBag())->put(
                 'default',
-                $validator->messages()
+                $validationErrors
             ));
 
-            return Response::view('index')
+            return Response::view('index', compact('validationErrors'))
                 ->setStatusCode(422);
         }
 
