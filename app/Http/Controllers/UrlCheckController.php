@@ -20,7 +20,7 @@ class UrlCheckController
 
         try {
             $response = Http::get($url->name);
-        } catch (HttpClientException | Exception $exception) {
+        } catch (HttpClientException | \GuzzleHttp\Exception\RequestException $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
 
