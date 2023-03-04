@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DiDom\Document;
+use Exception;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class UrlCheckController
 
         try {
             $response = Http::get($url->name);
-        } catch (HttpClientException $exception) {
+        } catch (HttpClientException | Exception $exception) {
             $errorMessage = $exception->getMessage();
             flash($errorMessage)->error();
 
